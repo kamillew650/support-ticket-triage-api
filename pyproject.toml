@@ -1,0 +1,39 @@
+[project]
+name = "support-ticket-triage-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.141.1",
+    "psycopg2-binary>=2.9.12",
+    "pydantic-settings>=2.15.0",
+    "sqlmodel>=0.0.42",
+]
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.48.0",
+    "ruff>=0.16.6",
+    "ty>=0.0.79",
+]
+
+[tool.poe.tasks]
+# --- Quality & Linting ---
+ruff = "ruff check ."
+ruff-fix = "ruff check . --fix"
+format = "ruff format ."
+
+# Type checking (assumes mypy, change to pyright if preferred)
+ty = "mypy ." 
+
+# Composite task to run all code quality checks at once
+check = ["ruff", "format", "ty"]
+
+# --- Docker Compose ---
+up = "docker compose up -d"
+down = "docker compose down"
+logs = "docker compose logs -f"
+
+# Restart Docker services
+restart = ["down", "up"]
