@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.19.2",
     "fastapi[standard]>=0.141.1",
     "psycopg2-binary>=2.9.12",
     "pydantic-settings>=2.15.0",
@@ -25,10 +26,15 @@ ruff-fix = "ruff check . --fix"
 format = "ruff format ."
 
 # Type checking (assumes mypy, change to pyright if preferred)
-ty = "mypy ." 
+ty = "ty check ." 
 
 # Composite task to run all code quality checks at once
 check = ["ruff", "format", "ty"]
+
+# --- Database Migrations ---
+migration.cmd = 'uv run alembic revision --autogenerate -m "${message}"'
+migration.args = [{ name = "message", positional = true, required = true }]
+migration-deploy = "uv run alembic upgrade head"
 
 # --- Docker Compose ---
 up = "docker compose up -d"
