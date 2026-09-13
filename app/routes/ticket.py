@@ -1,10 +1,16 @@
-from fastapi import APIRouter
+from app.db import SessionDep, get_session
+from typing import Annotated
+
+from app.dtos.create_ticket import CreateTicketDto
+from fastapi import APIRouter, Body, Depends
+from app.services.ticket_service import TicketService, get_ticket_service, TicketServiceDep
 
 router = APIRouter(prefix="/router")
 
-@router.get("/")
-def read_root():
-    return {"Hello": "World"}
+@router.post("/")
+def create_ticket(data: Annotated[CreateTicketDto, Body(ember=True)], ticket_service: TicketServiceDep):
+    ticket = ticket_service.create_ticket(data)
+    return ticket
 
 
 @router.get("/items/{item_id}")
