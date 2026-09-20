@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy import Column, String, Text
+from sqlalchemy import Column, String
 from sqlalchemy import Enum as SAEnum
 from sqlmodel import Field, Session, SQLModel, create_engine
 
@@ -41,18 +41,20 @@ class TicketCategory(str, Enum):
 
 
 class Ticket(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True, nullable=False)
     title: str = Field(sa_column=Column(String(255), nullable=False))
     description: str = Field(sa_column=Column(String(500), nullable=False))
     customer_id: int
-    status: TicketStatus | None = Field(
-        default=None,
+    status: TicketStatus = Field(
+        default=TicketStatus.TODO,
         sa_column=Column(
             SAEnum(
                 TicketStatus,
                 name="ticket_status",
                 values_callable=lambda enum: [item.value for item in enum],
-            )
+            ),
+            nullable=False,
+            server_default=TicketStatus.TODO.value,
         ),
     )
     priority: TicketPriority | None = Field(

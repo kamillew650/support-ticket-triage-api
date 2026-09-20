@@ -1,18 +1,36 @@
-from app.db import SessionDep, get_session
 from typing import Annotated
 
-from app.dtos.create_ticket import CreateTicketDto
-from fastapi import APIRouter, Body, Depends
-from app.services.ticket_service import TicketService, get_ticket_service, TicketServiceDep
+from fastapi import APIRouter, Body
 
-router = APIRouter(prefix="/router")
+from app.dtos.create_ticket import CreateTicketDto
+from app.services.ticket_service import TicketServiceDep
+
+from app.dtos.update_ticket import UpdateTicketDto
+from app.dtos.update_ticket_status import UpdateTicketStatusDto
+
+
+
+router = APIRouter(prefix="/ticket")
+
+@router.get("/{ticket_id}")
+def get_ticket_by_id(ticket_id: int, ticket_service: TicketServiceDep):
+    return ticket_service.get_ticket_by_id(ticket_id)
+
+@router.get("/")
+def get_paginated_tickets(ticket_service: TicketServiceDep, page: int = 1, per_page: int = 10, ):
+    return ticket_service.get_pagineted_tickets(page, per_page)
 
 @router.post("/")
 def create_ticket(data: Annotated[CreateTicketDto, Body(ember=True)], ticket_service: TicketServiceDep):
     ticket = ticket_service.create_ticket(data)
     return ticket
 
+@router.patch("/{ticket_id}")
+def update_ticket(ticket_id: int, data: Annotated[UpdateTicketDto, Body(ember=True)], ticket_service: TicketServiceDep):
+    ticket = ticket_service.update_ticket(ticket_id, data)
+    return ticket
 
-@router.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
+@router.patch("/{ticket_id}/status")
+def update_ticket_status(ticket_id: int, data: Annotated[UpdateTicketStatusDto, Body(ember=True)], ticket_service: TicketServiceDep):
+    ticket = ticket_service.update_ticket_status(ticket_id, data)
+    return ticket

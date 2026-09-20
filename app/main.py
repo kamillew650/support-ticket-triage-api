@@ -9,4 +9,4 @@ app = FastAPI(
 )
 
 app.include_router(ticket_router, tags=["tickets"])
-app.include_router(health_router, tags=["tickets"])
+app.include_router(health_router, tags=[""])

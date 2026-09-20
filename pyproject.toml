@@ -9,12 +9,16 @@ dependencies = [
     "fastapi[standard]>=0.141.1",
     "psycopg2-binary>=2.9.12",
     "pydantic-settings>=2.15.0",
+    "pytest>=9.1.1",
+    "requests>=2.34.2",
     "sqlmodel>=0.0.42",
 ]
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "poethepoet>=0.48.0",
+    "pytest>=9.1.1",
     "ruff>=0.16.6",
     "ty>=0.0.79",
 ]
