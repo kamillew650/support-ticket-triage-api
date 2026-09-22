@@ -1,9 +1,12 @@
-from typing import Iterator
+from collections.abc import Iterator
+
 import pytest
 from fastapi.testclient import TestClient
+from sqlmodel import Session, SQLModel, StaticPool, create_engine
+
+from app.db.session import get_session
 from app.main import app
-from app.db import get_session
-from sqlmodel import create_engine, StaticPool, SQLModel, Session
+
 
 @pytest.fixture
 def session() -> Iterator[Session]:

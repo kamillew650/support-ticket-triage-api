@@ -1,5 +1,5 @@
-from email.base64mime import body_encode
 from fastapi.testclient import TestClient
+
 
 def test_missing_get_ticket_by_id(client: TestClient):
     response = client.get("/ticket/999")
@@ -22,9 +22,9 @@ def test_get_ticket_by_id(client: TestClient):
 
 def test_get_paginated_tickets(client: TestClient):
     create_response = client.post("/ticket", json={"title": "Title", "description": "Description", "customer_id": 10})
-    id = create_response.json()["id"]
+    assert create_response.status_code == 200
 
-    response = client.get(f"/ticket")
+    response = client.get("/ticket")
 
     assert response.status_code == 200
     assert response.json()["total_pages"] == 1

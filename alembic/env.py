@@ -5,7 +5,7 @@ from sqlmodel import SQLModel
 
 from alembic import context
 from app.config import settings
-from app.db import Ticket  # noqa: F401
+from app.db.ticket import Ticket  # noqa: F401
 
 config = context.config
 

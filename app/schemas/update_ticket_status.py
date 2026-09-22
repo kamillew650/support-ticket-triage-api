@@ -1,5 +1,6 @@
-from app.db import TicketStatus
 from pydantic import BaseModel, Field
+
+from app.db.ticket import TicketStatus
 
 
 class UpdateTicketStatusDto(BaseModel):

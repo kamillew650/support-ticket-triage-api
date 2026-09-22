@@ -9,7 +9,6 @@ dependencies = [
     "fastapi[standard]>=0.141.1",
     "psycopg2-binary>=2.9.12",
     "pydantic-settings>=2.15.0",
-    "pytest>=9.1.1",
     "requests>=2.34.2",
     "sqlmodel>=0.0.42",
 ]
@@ -48,3 +47,6 @@ logs = "docker compose logs -f"
 
 # Restart Docker services
 restart = ["down", "up"]
+
+# --- Testing ---
+test = "DB_CONNECTION_STRING=sqlite:// uv run python -m pytest -v"
